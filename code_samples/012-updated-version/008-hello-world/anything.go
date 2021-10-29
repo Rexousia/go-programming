@@ -15,6 +15,7 @@ func main() {
 
 	bar()
 }
+
 func foo() {
 	fmt.Println("I'm in foo")
 }
