@@ -2,28 +2,34 @@ package main
 
 import (
 	"fmt"
+	"runtime"
 	"sync"
 )
 
 func main() {
-	var wg sync.WaitGroup
+	fmt.Println("CPUs:", runtime.NumCPU())
+	fmt.Println("Goroutines", runtime.NumGoroutine())
 
-	incrementer := 0
-	gs := 100
+	counter := 0
+
+	const gs = 100
+	var wg sync.WaitGroup
 	wg.Add(gs)
-	var m sync.Mutex
+
+	var mu sync.Mutex
 
 	for i := 0; i < gs; i++ {
 		go func() {
-			m.Lock()
-			v := incrementer
+			mu.Lock()
+			v := counter
+			runtime.Gosched()
 			v++
-			incrementer = v
-			fmt.Println(incrementer)
-			m.Unlock()
+			counter = v
 			wg.Done()
 		}()
+		fmt.Println("Goroutines:", runtime.NumGoroutine())
 	}
 	wg.Wait()
-	fmt.Println("end value:", incrementer)
+	fmt.Println("Goroutines", runtime.NumGoroutine())
+	fmt.Println("Counter:", counter)
 }

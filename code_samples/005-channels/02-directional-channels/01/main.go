@@ -10,6 +10,7 @@ func main() {
 
 	fmt.Println(<-c)
 	fmt.Println(<-c)
-	fmt.Println("-----")
+	fmt.Println("------")
 	fmt.Printf("%T\n", c)
+
 }

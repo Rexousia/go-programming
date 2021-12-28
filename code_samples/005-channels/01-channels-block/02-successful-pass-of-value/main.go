@@ -8,6 +8,5 @@ func main() {
 	go func() {
 		c <- 42
 	}()
-
 	fmt.Println(<-c)
 }
