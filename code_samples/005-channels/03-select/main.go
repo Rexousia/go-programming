@@ -1,42 +1,43 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math/rand"
+	"time"
+)
 
 func main() {
-	eve := make(chan int)
-	odd := make(chan int)
-	quit := make(chan int)
+	c := fanIn(boring("Joe"), boring("Ann"))
+	for i := 0; i < 12; i++ {
+		fmt.Println(<-c)
+	}
+	fmt.Println("You are both boring; I'm Leaving")
 
-	// send
-	go send(eve, odd, quit)
-
-	// receive
-	receive(eve, odd, quit)
-
-	fmt.Println("about to exit")
 }
 
-func receive(e, o, q <-chan int) {
-	for {
-		select {
-		case v := <-e:
-			fmt.Println("from the eve channel:", v)
-		case v := <-o:
-			fmt.Println("from the odd channel:", v)
-		case v := <-q:
-			fmt.Println("from the quit channel:", v)
-			return
+func boring(msg string) <-chan string {
+	c := make(chan string)
+	go func() {
+		for i := 0; ; i++ {
+			c <- fmt.Sprintf("%s %d\n", msg, i)
+			time.Sleep(time.Duration(rand.Intn(1e3)) * time.Millisecond)
 		}
-	}
+	}()
+	return c
 }
 
-func send(e, o, q chan<- int) {
-	for i := 0; i < 100; i++ {
-		if i%2 == 0 {
-			e <- i
-		} else {
-			o <- i
+//FAN IN
+func fanIn(input1, input2 <-chan string) <-chan string {
+	c := make(chan string)
+	go func() {
+		for {
+			c <- <-input1
 		}
-	}
-	q <- 0
+	}()
+	go func() {
+		for {
+			c <- <-input2
+		}
+	}()
+	return c
 }

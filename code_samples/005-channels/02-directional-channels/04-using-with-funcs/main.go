@@ -1,25 +1,30 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 func main() {
+
 	c := make(chan int)
 
-	// send
-	go foo(c)
+	//send
+	go fooSend(c)
 
-	// receive
-	bar(c)
+	//receive
+	barReceive(c)
 
-	fmt.Println("about to exit")
+	fmt.Println("About to exit")
 }
 
-// send
-func foo(c chan<- int) {
+//send
+func fooSend(c chan<- int) {
 	c <- 42
+
 }
 
-// receive
-func bar(c <-chan int) {
+//receive
+func barReceive(c <-chan int) {
 	fmt.Println(<-c)
+
 }
