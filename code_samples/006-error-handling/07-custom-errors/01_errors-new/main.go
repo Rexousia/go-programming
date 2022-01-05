@@ -6,15 +6,17 @@ import (
 )
 
 func main() {
-	_, err := sqrt(-10)
+	_, err := sqroot(-10)
 	if err != nil {
 		log.Fatalln(err)
 	}
+
 }
 
-func sqrt(f float64) (float64, error) {
+func sqroot(f float64) (float64, error) {
 	if f < 0 {
-		return 0, errors.New("norgate math: square root of negative number")
+		return 0, errors.New("norgate Math: square root of negative number")
 	}
 	return 42, nil
+
 }

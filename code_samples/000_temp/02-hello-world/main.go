@@ -2,20 +2,15 @@ package main
 
 import (
 	"fmt"
-	"io"
 	"os"
-	"strings"
 )
 
 func main() {
-	f, err := os.Create("names.txt")
+	_, err := os.Open("no-file.txt")
 	if err != nil {
-		fmt.Println(err)
-		return
+		fmt.Println("The no-file.txt was not found", err)
+		// log.Println("err happened", err)
+		// log.Fatalln(err)
+		// panic(err)
 	}
-	defer f.Close()
-
-	r := strings.NewReader("James Bond")
-
-	io.Copy(f, r)
 }
