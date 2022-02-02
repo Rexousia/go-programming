@@ -1,8 +1,8 @@
 package main
 
 import (
+	"dog"
 	"fmt"
-	"github.com/GoesToEleven/go-programming/code_samples/008-ninja-level-twelve/01/dog"
 )
 
 type canine struct {
